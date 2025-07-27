@@ -13,6 +13,10 @@ A Streamlit web application that lets us upload a PDF document and chat with it 
 - User friendly interface with clear prompts and error handling.
 
 ---
+## Try PDFChatty
+[![Open App](https://img.shields.io/badge/Open%20PDFChatty%20App-Click%20Here-brightgreen?style=for-the-badge)](https://pdfchatty.streamlit.app/)
+
+---
 
 ## Used Technologies
 
