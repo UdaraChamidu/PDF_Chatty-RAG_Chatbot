@@ -5,7 +5,7 @@ import tempfile
 import streamlit as st
 from dotenv import load_dotenv
 
-from langchain_groq import ChatGroq
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -61,19 +61,19 @@ if prompt and st.session_state.vectorstore:
     st.session_state.messages.append({'role': 'user', 'content': prompt})
 
     # System prompt
-    groq_sys_prompt = ChatPromptTemplate.from_template(
+    gemini_sys_prompt = ChatPromptTemplate.from_template(
         """You are a very good AI assistant named "Chatty". You always provide precise and concise answers based on user input. Be nice and polite."""
     )
 
-    # LLM Setup
-    groq_chat = ChatGroq(
-        groq_api_key=os.environ.get("GROQ_API_KEY"),
-        model_name="llama3-8b-8192"
+    # LLM Setup with Gemini
+    gemini_chat = ChatGoogleGenerativeAI(
+        model="gemini-2.5-flash",   # or "gemini-1.5-pro"
+        google_api_key=os.environ.get("GOOGLE_API_KEY")
     )
 
     try:
         chain = RetrievalQA.from_chain_type(
-            llm=groq_chat,
+            llm=gemini_chat,
             chain_type='stuff',
             retriever=st.session_state.vectorstore.as_retriever(search_kwargs={"k": 3}),
             return_source_documents=True
@@ -90,8 +90,3 @@ if prompt and st.session_state.vectorstore:
 
 elif prompt and not st.session_state.vectorstore:
     st.warning("Please upload a PDF first.")
-    
-    
-
-
-
